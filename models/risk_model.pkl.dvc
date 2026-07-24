@@ -1,0 +1,5 @@
+outs:
+- md5: 5f15cab10c78a8acf67baed7a9ae91e6
+  size: 79745
+  hash: md5
+  path: risk_model.pkl
