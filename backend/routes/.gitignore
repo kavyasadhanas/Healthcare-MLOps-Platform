@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+
+.venv/
+
+mlruns/
+
+logs/
+
+*.db
+
+.env
+
+.vscode/
+
+models/*.pkl

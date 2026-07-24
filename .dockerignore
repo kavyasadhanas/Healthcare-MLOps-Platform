@@ -1,0 +1,16 @@
+.venv
+venv
+__pycache__
+*.pyc
+.git
+.gitignore
+mlruns
+.dvc
+dvc_storage
+.env
+*.db
+*.sqlite3
+.vscode
+.idea
+.pytest_cache
+*.log
