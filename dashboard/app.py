@@ -1,94 +1,39 @@
 import streamlit as st
 import requests
-import pandas as pd
 
-st.set_page_config(page_title="GenomicTwinOps", layout="wide")
-
-st.title("🧬 GenomicTwinOps")
-st.subheader("Disease Risk Prediction")
-
-# -------------------------
-# Input
-# -------------------------
-
-age = st.number_input("Age", 1, 100)
-
-gender = st.selectbox(
-    "Gender",
-    ["Female", "Male"]
+st.set_page_config(
+    page_title="Healthcare Risk Prediction",
+    page_icon="🏥",
+    layout="centered"
 )
 
-family = st.selectbox(
-    "Family History",
-    ["No", "Yes"]
-)
+st.title("🏥 Healthcare Risk Prediction")
 
-gender_value = 0 if gender == "Female" else 1
-family_value = 0 if family == "No" else 1
+st.write("Enter patient details")
 
-# -------------------------
-# Prediction
-# -------------------------
+age = st.number_input("Age", 1, 120, 35)
+bmi = st.number_input("BMI", 10.0, 60.0, 25.0)
+glucose = st.number_input("Glucose", 50, 300, 100)
 
 if st.button("Predict"):
 
     payload = {
         "age": age,
-        "gender": gender_value,
-        "family_history": family_value
+        "bmi": bmi,
+        "glucose": glucose
     }
 
     try:
-
         response = requests.post(
-            "http://127.0.0.1:8000/predict-risk",
+            "http://127.0.0.1:8000/predict",
             json=payload
         )
 
         if response.status_code == 200:
-
-            result = response.json()
-
-            st.success("Prediction Complete")
-
-            st.metric(
-                "Predicted Risk",
-                result["predicted_risk"]
-            )
-
-            st.metric(
-                "Confidence",
-                f'{result["confidence"]}%'
-            )
-
+            st.success("Prediction Successful")
+            st.json(response.json())
         else:
             st.error(response.text)
 
     except Exception as e:
-        st.error(e)
-
-# -------------------------
-# History
-# -------------------------
-
-st.divider()
-
-st.subheader("Prediction History")
-
-try:
-
-    history = requests.get(
-        "http://127.0.0.1:8000/history"
-    )
-
-    if history.status_code == 200:
-
-        df = pd.DataFrame(history.json())
-
-        st.dataframe(
-            df,
-            use_container_width=True
-        )
-
-except:
-    st.warning("Backend not running")
+        st.error(str(e))
